@@ -1,0 +1,71 @@
+<div th:fragment="content" xmlns:th="http://www.w3.org/1999/xhtml">
+  <div id="update-employee-form" class="form-container update-employee-container">
+    <h2><i class="fas fa-edit"></i> Update Employee</h2>
+    <form id="update-employee-form-element" onsubmit="return false;">
+      <div class="mb-3">
+        <label for="employeeId" class="form-label">Employee ID</label>
+        <input type="text" class="form-control" id="employeeId" name="employeeId" th:value="${employee.employeeId}" readonly>
+      </div>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" name="username" th:value="${employee.username}">
+      </div>
+      <div class="mb-3">
+        <label for="firstName" class="form-label">First Name</label>
+        <input type="text" class="form-control" id="firstName" name="firstName" th:value="${employee.firstName}">
+      </div>
+      <div class="mb-3">
+        <label for="lastName" class="form-label">Last Name</label>
+        <input type="text" class="form-control" id="lastName" name="lastName" th:value="${employee.lastName}">
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" th:value="${employee.email}">
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" th:value="${employee.password}">
+      </div>
+      <div class="mb-3">
+        <label for="phoneNumber" class="form-label">Phone Number</label>
+        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" th:value="${employee.phoneNumber ?: ''}">
+      </div>
+      <div class="mb-3">
+        <label for="dob" class="form-label">Date of Birth</label>
+        <input type="date" class="form-control" id="dob" name="dob" th:value="${employee.dob ?: ''}">
+      </div>
+      <div class="mb-3">
+        <label for="positionName" class="form-label">Position Name</label>
+        <input type="text" class="form-control" id="positionName" name="positionName" th:value="${employee.position?.name ?: ''}">
+      </div>
+      <div class="mb-3">
+        <label for="positionCode" class="form-label">Position Code</label>
+        <input type="number" class="form-control" id="positionCode" name="positionCode" th:value="${employee.position?.code ?: ''}">
+      </div>
+      <div class="mb-3">
+        <label for="qualifications" class="form-label">Qualifications</label>
+        <select multiple class="form-control" id="qualifications" name="qualifications">
+          <option th:each="qualType : ${T(com.example.hrsystem.model.Qualification.QualificationType).values()}"
+                  th:value="${qualType}"
+                  th:text="${qualType}"
+                  th:selected="${employee.qualifications?.contains(T(com.example.hrsystem.model.Qualification).new().setType(qualType))}"></option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="profilePicUpload" class="form-label">Profile Picture</label>
+        <input type="file" class="form-control" id="profilePicUpload" name="profilePicUpload" accept="image/*">
+        <div class="profile-pic-container mt-3" th:if="${employee.profilePic != null}">
+          <img th:src="@{'data:image/jpeg;base64,' + #{T(org.apache.commons.codec.binary.Base64).encodeBase64String(employee.profilePic)}}" class="profile-pic-preview"/>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary btn-update-employee" th:data-employee-id="${employee.employeeId}">Update Employee</button>
+    </form>
+
+    <div id="update-result" th:if="${message}" class="alert alert-success">
+      <i class="fas fa-check-circle"></i> <span th:text="${message}"></span>
+    </div>
+    <div id="update-result" th:if="${error}" class="alert alert-danger">
+      <i class="fas fa-exclamation-circle"></i> <span th:text="${error}"></span>
+    </div>
+  </div>
+</div>

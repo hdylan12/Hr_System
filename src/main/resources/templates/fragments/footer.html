@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        footer {
+          background: #fff;
+          padding: 15px 40px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+          position: relative;
+          width: 100%;
+          z-index: 1000;
+        }
+
+        footer p {
+          margin: 0;
+          font-size: 0.9rem;
+          color: #6c757d;
+        }
+
+        footer .footer-links a {
+          margin-left: 25px; /* Increased spacing */
+          font-size: 0.9rem;
+          color: #4361ee;
+          text-decoration: none;
+          transition: color 0.3s ease;
+        }
+
+        footer .footer-links a:hover {
+          color: #3f37c9;
+          text-decoration: underline;
+        }
+
+        @media (max-width: 576px) {
+          footer {
+            flex-direction: column;
+            gap: 10px;
+            padding: 12px 25px;
+          }
+
+          footer .footer-links a {
+            margin-left: 15px;
+          }
+        }
+    </style>
+</head>
+<body>
+<footer th:fragment="footer">
+    <p>© 2025 HR Manager. All rights reserved.</p>
+    <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Support</a>
+    </div>
+</footer>
+</body>
+</html>

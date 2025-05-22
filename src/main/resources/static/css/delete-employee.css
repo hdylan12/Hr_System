@@ -1,0 +1,206 @@
+/* Scoped styles for Delete Employee fragment */
+.delete-employee-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9d5d5 100%);
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.delete-employee-container h2 {
+  color: #e53935;
+  margin-bottom: 24px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.delete-employee-container .form-label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.delete-employee-container .form-control {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.delete-employee-container .form-control:focus {
+  border-color: #e53935;
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.2);
+  outline: none;
+}
+
+.delete-employee-container .btn-primary {
+  background: linear-gradient(to right, #e53935, #ff6f60);
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-top: 15px;
+}
+
+.delete-employee-container .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
+}
+
+.delete-employee-container .employee-card {
+  margin-top: 30px;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  transition: all 0.3s ease;
+}
+
+.delete-employee-container .employee-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.delete-employee-container .profile-section {
+  background: linear-gradient(135deg, #e53935, #ff6f60);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-employee-container .profile-pic-container {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 20px;
+  border: 4px solid white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.delete-employee-container .profile-pic-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.delete-employee-container .employee-name {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+}
+
+.delete-employee-container .employee-position {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+  margin-top: 5px;
+  text-align: center;
+}
+
+.delete-employee-container .details-section {
+  padding: 30px;
+}
+
+.delete-employee-container .details-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.delete-employee-container .details-table tr {
+  border-bottom: 1px solid #eee;
+}
+
+.delete-employee-container .details-table tr:last-child {
+  border-bottom: none;
+}
+
+.delete-employee-container .details-table td {
+  padding: 15px 10px;
+}
+
+.delete-employee-container .details-table td:first-child {
+  width: 40%;
+  font-weight: 600;
+  color: #e53935;
+}
+
+.delete-employee-container .details-table td:last-child {
+  color: #555;
+}
+
+.delete-employee-container .detail-icon {
+  margin-right: 10px;
+  color: #e53935;
+  width: 20px;
+  text-align: center;
+  display: inline-block;
+}
+
+.delete-employee-container .alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+.delete-employee-container .employee-id-badge {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 5px 15px;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.9rem;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.delete-employee-container .btn-delete-employee {
+  background: linear-gradient(to right, #b71c1c, #e53935) !important;
+  color: white !important;
+  border: none !important;
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-employee-container .btn-delete-employee:hover {
+  background: linear-gradient(to right, #d32f2f, #f44336) !important;
+  box-shadow: 0 7px 14px rgba(229, 57, 53, 0.4);
+}
+
+.delete-employee-container .delete-warning {
+  background-color: rgba(229, 57, 53, 0.1);
+  border-left: 4px solid #e53935;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+  .delete-employee-container .employee-card {
+    grid-template-columns: 1fr;
+  }
+
+  .delete-employee-container .profile-section {
+    padding-bottom: 20px;
+  }
+}

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="dashboard-content">
+  <div class="dashboard-grid">
+    <div class="left-column">
+      <div class="welcome-section">
+        <h1>HR Dashboard</h1>
+        <p>Efficient Employee Management</p>
+      </div>
+
+      <div class="employee-summary">
+        <div class="card">
+          <h3>Employee Summary</h3>
+          <div th:if="${employees != null and not #lists.isEmpty(employees)}">
+            <p>Total: <span class="fw-bold" th:text="${#lists.size(employees)}" style="color: var(--primary);"></span></p>
+          </div>
+          <div th:if="${employees == null or #lists.isEmpty(employees)}" class="alert alert-info">
+            No employees found.
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-cards">
+        <div class="stat-card">
+          <div class="icon blue">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="data">
+            <h3 th:text="${#lists.size(employees)} ?: '246'">246</h3>
+            <p>Employees</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="icon purple">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <div class="data">
+            <h3 th:text="${newHires} ?: '12'">12</h3>
+            <p>New Hires</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="icon teal">
+            <i class="fas fa-user-clock"></i>
+          </div>
+          <div class="data">
+            <h3>95%</h3>
+            <p>Attendance</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="icon red">
+            <i class="fas fa-user-times"></i>
+          </div>
+          <div class="data">
+            <h3>5</h3>
+            <p>Pending Leaves</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="recent-section">
+        <div class="section-header">
+          <h2>Recent Activities</h2>
+          <a href="#">View All</a>
+        </div>
+        <table class="activity-table">
+          <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Activity</th>
+            <th>Date</th>
+            <th>Status</th>
+          </tr>
+          </thead>
+          <tbody>
+          <th:block th:if="${employees != null and not #lists.isEmpty(employees)}">
+            <th:block th:each="emp, iter : ${employees}" th:if="${iter.count <= 5}">
+              <tr>
+                <td th:text="${emp.firstName + ' ' + emp.lastName} ?: 'Jane Smith'">Jane Smith</td>
+                <td th:text="${iter.index == 0 ? 'Leave Request (Sick)' : iter.index == 1 ? 'Performance Review' : iter.index == 2 ? 'Training Request' : iter.index == 3 ? 'Overtime Request' : 'New Employee Onboarding'}">Leave Request (Sick)</td>
+                <td th:text="${recentDates != null and not #lists.isEmpty(recentDates) and iter.index < #lists.size(recentDates) ? recentDates[iter.index] : 'Apr ' + (9 - iter.index) + ', 2025'}">Apr 9, 2025</td>
+                <td>
+                    <span th:classappend="${iter.index == 0 ? 'status active' : iter.index == 1 ? 'status pending' : iter.index == 2 ? 'status active' : iter.index == 3 ? 'status rejected' : 'status completed'}"
+                          th:text="${iter.index == 0 ? 'Approved' : iter.index == 1 ? 'Pending' : iter.index == 2 ? 'Approved' : iter.index == 3 ? 'Rejected' : 'Completed'}">Approved</span>
+                </td>
+              </tr>
+            </th:block>
+          </th:block>
+          <th:block th:if="${employees == null or #lists.isEmpty(employees)}">
+            <tr>
+              <td>Jane Smith</td>
+              <td>Leave Request (Sick)</td>
+              <td>Apr 9, 2025</td>
+              <td><span class="status active">Approved</span></td>
+            </tr>
+            <tr>
+              <td>Michael Brown</td>
+              <td>Performance Review</td>
+              <td>Apr 8, 2025</td>
+              <td><span class="status pending">Pending</span></td>
+            </tr>
+            <tr>
+              <td>Sarah Johnson</td>
+              <td>Training Request</td>
+              <td>Apr 7, 2025</td>
+              <td><span class="status active">Approved</span></td>
+            </tr>
+            <tr>
+              <td>Robert Lee</td>
+              <td>Overtime Request</td>
+              <td>Apr 6, 2025</td>
+              <td><span class="status rejected">Rejected</span></td>
+            </tr>
+            <tr>
+              <td>Emily Davis</td>
+              <td>New Employee Onboarding</td>
+              <td>Apr 5, 2025</td>
+              <td><span class="status completed">Completed</span></td>
+            </tr>
+          </th:block>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="right-column">
+      <div class="chart-container">
+        <div class="chart-header">
+          <h2>Turnover Rate</h2>
+          <select>
+            <option>This Year</option>
+            <option>Last Year</option>
+          </select>
+        </div>
+        <canvas id="turnoverChart"></canvas>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-header">
+          <h2>Dept Distribution</h2>
+          <select>
+            <option>All</option>
+            <option>Active</option>
+          </select>
+        </div>
+        <canvas id="deptChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

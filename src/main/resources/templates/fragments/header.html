@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        .header {
+          background: #fff;
+          padding: 15px 40px; /* Increased padding */
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          position: fixed;
+          top: 0;
+          width: 100%;
+          z-index: 1000;
+        }
+
+        .search-bar {
+          flex: 1;
+          max-width: 500px;
+          position: relative;
+          margin: 0 30px; /* Increased margin */
+        }
+
+        .search-bar input {
+          width: 100%;
+          padding: 10px 15px 10px 40px;
+          border: 1px solid #e0e0e0;
+          border-radius: 25px;
+          font-size: 0.95rem;
+          color: #495057;
+          background: #f8f9fa;
+          transition: border-color 0.3s ease;
+        }
+
+        .search-bar input:focus {
+          border-color: var(--primary);
+          outline: none;
+        }
+
+        .search-bar i {
+          position: absolute;
+          left: 15px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #6c757d;
+          font-size: 0.9rem;
+        }
+
+        .header-actions {
+          display: flex;
+          align-items: center;
+          gap: 25px; /* Increased gap */
+        }
+
+        .header-actions .icon {
+          position: relative;
+          font-size: 1.5rem; /* Larger icons */
+          color: #495057;
+          cursor: pointer;
+          transition: color 0.3s ease;
+        }
+
+        .header-actions .icon:hover {
+          color: var(--primary);
+        }
+
+        .header-actions .icon .badge {
+          position: absolute;
+          top: -8px;
+          right: -8px;
+          background: #ff4081;
+          color: #fff;
+          font-size: 0.7rem;
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .header-actions .profile {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 0.95rem;
+          color: #495057;
+          cursor: pointer;
+        }
+
+        .header-actions .profile i {
+          font-size: 0.9rem;
+          color: #6c757d;
+        }
+
+        @media (max-width: 768px) {
+          .header {
+            padding: 12px 25px;
+          }
+
+          .search-bar {
+            max-width: 300px;
+            margin: 0 15px;
+          }
+
+          .header-actions {
+            gap: 15px;
+          }
+        }
+
+        @media (max-width: 576px) {
+          .search-bar {
+            max-width: 200px;
+          }
+
+          .header-actions {
+            gap: 10px;
+          }
+
+          .header-actions .profile span {
+            display: none;
+          }
+        }
+    </style>
+</head>
+<body>
+<header th:fragment="header" class="header">
+    <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search...">
+    </div>
+    <div class="header-actions">
+        <div class="icon">
+            <i class="fas fa-bell"></i>
+            <span class="badge">5</span>
+        </div>
+        <div class="icon">
+            <i class="fas fa-envelope"></i>
+            <span class="badge">3</span>
+        </div>
+        <div class="profile">
+            <span th:text="${username} ?: 'John Doe'">John Doe</span>
+            <i class="fas fa-caret-down"></i>
+        </div>
+    </div>
+</header>
+</body>
+</html>

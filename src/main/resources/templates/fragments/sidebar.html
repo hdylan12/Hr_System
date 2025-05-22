@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="sidebar" class="sidebar bg-light">
+    <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#" data-content="dashboard">
+                    <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-content="employees">
+                    <i class="fas fa-users me-2"></i> Employee Managementzzzz
+                </a>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-content="add-user">
+                    <i class="fas fa-user-plus"></i> Add a User
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-content="reports">
+                    <i class="fas fa-chart-bar me-2"></i> Reports
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-content="settings">
+                    <i class="fas fa-cog me-2"></i> System Settings
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+</body>
+</html>

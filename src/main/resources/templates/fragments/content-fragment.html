@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+  <div th:switch="${contentType}">
+    <!-- Dashboard -->
+    <div th:case="'dashboard'">
+      <!-- Already defined in your setup -->
+      <div class="dashboard-grid">
+        <div class="left-column">
+          <div class="welcome-section">
+            <h1>HR Dashboard</h1>
+            <p>Efficient Employee Management</p>
+          </div>
+          <div class="employee-summary">
+            <div class="card">
+              <h3>Employee Summary</h3>
+              <p>Total: <span class="fw-bold" style="color: var(--primary);" th:text="${#lists.size(employees)} ?: '246'">246</span></p>
+            </div>
+          </div>
+          <div class="stat-cards">
+            <div class="stat-card">
+              <div class="icon blue"><i class="fas fa-users"></i></div>
+              <div class="data"><h3 th:text="${#lists.size(employees)} ?: '246'">246</h3><p>Employees</p></div>
+            </div>
+            <div class="stat-card">
+              <div class="icon purple"><i class="fas fa-user-plus"></i></div>
+              <div class="data"><h3 th:text="${newHires} ?: '12'">12</h3><p>New Hires</p></div>
+            </div>
+            <div class="stat-card">
+              <div class="icon teal"><i class="fas fa-user-clock"></i></div>
+              <div class="data"><h3>95%</h3><p>Attendance</p></div>
+            </div>
+            <div class="stat-card">
+              <div class="icon red"><i class="fas fa-user-times"></i></div>
+              <div class="data"><h3>5</h3><p>Pending Leaves</p></div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <div class="chart-header">
+              <h2>Dept Distribution</h2>
+              <select><option>All</option><option>Active</option></select>
+            </div>
+            <canvas id="deptChart"></canvas>
+          </div>
+        </div>
+        <div class="right-column">
+          <div class="charts-section">
+            <div class="chart-container">
+              <div class="chart-header">
+                <h2>Turnover Rate</h2>
+                <select><option>This Year</option><option>Last Year</option></select>
+              </div>
+              <canvas id="turnoverChart"></canvas>
+            </div>
+          </div>
+          <div class="recent-section">
+            <div class="section-header">
+              <h2>Recent Activities</h2>
+              <a href="#">View All</a>
+            </div>
+            <table class="activity-table">
+              <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Activity</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>Jane Smith</td>
+                <td>Leave Request (Sick)</td>
+                <td>Apr 9, 2025</td>
+                <td><span class="status active">Approved</span></td>
+              </tr>
+              <tr>
+                <td>Michael Brown</td>
+                <td>Performance Review</td>
+                <td>Apr 8, 2025</td>
+                <td><span class="status pending">Pending</span></td>
+              </tr>
+              <tr>
+                <td>Sarah Johnson</td>
+                <td>Training Request</td>
+                <td>Apr 7, 2025</td>
+                <td><span class="status active">Approved</span></td>
+              </tr>
+              <tr>
+                <td>Robert Lee</td>
+                <td>Overtime Request</td>
+                <td>Apr 6, 2025</td>
+                <td><span class="status rejected">Rejected</span></td>
+              </tr>
+              <tr>
+                <td>Emily Davis</td>
+                <td>New Employee Onboarding</td>
+                <td>Apr 5, 2025</td>
+                <td><span class="status completed">Completed</span></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar -->
+    <div th:case="'calendar'">
+      <div class="welcome-section">
+        <h1>Calendar</h1>
+        <p>View and manage HR events and schedules.</p>
+      </div>
+      <div class="card">
+        <h3>Upcoming Events</h3>
+        <ul>
+          <li th:each="event : ${events}" th:text="${event}">Team Meeting - Apr 15, 2025</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Employee Management -->
+    <div th:case="'employees-content'">
+      <div class="welcome-section">
+        <h1>Employee Management</h1>
+        <p>Manage employee records and details.</p>
+      </div>
+      <div class="recent-section">
+        <div class="section-header">
+          <h2>Employee List</h2>
+          <a href="#" onclick="loadAddEmployeeForm()">Add New Employee</a>
+        </div>
+        <table class="activity-table">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="emp : ${employees}">
+            <td th:text="${emp.firstName + ' ' + emp.lastName}">Jane Smith</td>
+            <td th:text="${emp.department}">IT</td>
+            <td th:text="${emp.role}">Software Engineer</td>
+            <td><span class="status active">Active</span></td>
+            <td>
+              <button class="btn btn-sm btn-primary edit-employee" th:attr="data-id=${emp.employeeId ?: '1'}">Edit</button>
+              <button class="btn btn-sm btn-danger delete-employee" th:attr="data-id=${emp.employeeId ?: '1'}">Delete</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Recruitment -->
+    <div th:case="'recruitment'">
+      <div class="welcome-section">
+        <h1>Recruitment</h1>
+        <p>Track and manage recruitment processes.</p>
+      </div>
+      <div class="card">
+        <h3>Open Positions</h3>
+        <ul>
+          <li th:each="position : ${openPositions}" th:text="${position}">Software Developer - 3 Applicants</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Attendance -->
+    <div th:case="'attendance'">
+      <div class="welcome-section">
+        <h1>Attendance</h1>
+        <p>Monitor employee attendance records.</p>
+      </div>
+      <div class="card">
+        <h3>Today's Attendance</h3>
+        <ul>
+          <li th:each="stat : ${attendanceStats}" th:text="${stat}">Present: 230</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Employee Actions -->
+    <div th:case="'employee-actions'">
+      <div class="welcome-section">
+        <h1>Employee Actions</h1>
+        <p>Perform actions like promotions, transfers, etc.</p>
+      </div>
+      <div class="card">
+        <h3>Pending Actions</h3>
+        <ul>
+          <li th:each="action : ${pendingActions}" th:text="${action}">Promotion Request - John Doe</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Departments -->
+    <div th:case="'departments'">
+      <div class="welcome-section">
+        <h1>Departments</h1>
+        <p>View and manage company departments.</p>
+      </div>
+      <div class="card">
+        <h3>Department List</h3>
+        <ul>
+          <li th:each="dept : ${departments}" th:text="${dept}">IT - 50 Employees</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Reports -->
+    <div th:case="'reports'">
+      <div class="welcome-section">
+        <h1>Reports</h1>
+        <p>Generate and view HR reports.</p>
+      </div>
+      <div class="card">
+        <h3>Available Reports</h3>
+        <ul>
+          <li th:each="report : ${reports}" th:text="${report}">Turnover Report</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Company Policy -->
+    <div th:case="'company-policy'">
+      <div class="welcome-section">
+        <h1>Company Policy</h1>
+        <p>View and update company policies.</p>
+      </div>
+      <div class="card">
+        <h3>Policies</h3>
+        <ul>
+          <li th:each="policy : ${policies}" th:text="${policy}">Leave Policy</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Payroll Calculator -->
+    <div th:case="'payroll-calculator'">
+      <div class="welcome-section">
+        <h1>Payroll Calculator</h1>
+        <p>Calculate employee payroll and deductions.</p>
+      </div>
+      <div class="card">
+        <h3>Payroll Tools</h3>
+        <p>Enter employee details to calculate payroll.</p>
+        <button class="btn btn-primary">Calculate Now</button>
+      </div>
+    </div>
+
+    <!-- Add Employee and Update Employee -->
+    <div th:case="'add-employee'">
+      <!-- Add your existing add-employee form here -->
+      <div class="welcome-section">
+        <h1>Add Employee</h1>
+        <p>Add a new employee to the system.</p>
+      </div>
+      <form action="/hr/content/add-employee" method="post">
+        <div class="mb-3">
+          <label for="firstName" class="form-label">First Name</label>
+          <input type="text" class="form-control" id="firstName" name="firstName" required>
+        </div>
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input type="text" class="form-control" id="lastName" name="lastName" required>
+        </div>
+        <div class="mb-3">
+          <label for="department" class="form-label">Department</label>
+          <input type="text" class="form-control" id="department" name="department">
+        </div>
+        <div class="mb-3">
+          <label for="role" class="form-label">Role</label>
+          <input type="text" class="form-control" id="role" name="role">
+        </div>
+        <div class="mb-3">
+          <label for="profilePicUpload" class="form-label">Profile Picture</label>
+          <input type="file" class="form-control" id="profilePicUpload" name="profilePic">
+          <input type="hidden" id="profilePicHidden" name="profilePicHidden">
+        </div>
+        <button type="submit" class="btn btn-primary">Add Employee</button>
+      </form>
+    </div>
+
+    <div th:case="'update-employee'">
+      <!-- Add your existing update-employee form here -->
+      <div class="welcome-section">
+        <h1>Update Employee</h1>
+        <p>Update employee details.</p>
+      </div>
+      <form action="/hr/content/update-employee" method="post">
+        <input type="hidden" name="employeeId" th:value="${employeeId ?: '1'}">
+        <div class="mb-3">
+          <label for="firstName" class="form-label">First Name</label>
+          <input type="text" class="form-control" id="firstName" name="firstName" th:value="${employee?.firstName ?: ''}" required>
+        </div>
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input type="text" class="form-control" id="lastName" name="lastName" th:value="${employee?.lastName ?: ''}" required>
+        </div>
+        <div class="mb-3">
+          <label for="department" class="form-label">Department</label>
+          <input type="text" class="form-control" id="department" name="department" th:value="${employee?.department ?: ''}">
+        </div>
+        <div class="mb-3">
+          <label for="role" class="form-label">Role</label>
+          <input type="text" class="form-control" id="role" name="role" th:value="${employee?.role ?: ''}">
+        </div>
+        <div class="mb-3">
+          <label for="profilePicUpload" class="form-label">Profile Picture</label>
+          <input type="file" class="form-control" id="profilePicUpload" name="profilePic">
+          <input type="hidden" id="profilePicHidden" name="profilePicHidden" th:value="${employee?.profilePic ?: ''}">
+        </div>
+        <button type="submit" class="btn btn-primary">Update Employee</button>
+      </form>
+    </div>
+
+    <!-- Default case if contentType is not recognized -->
+    <div th:case="*">
+      <div class="alert alert-danger">Error: Content not found for <span th:text="${contentType}"></span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Employee Management</title>
+  <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        margin: 0;
+        padding: 20px;
+        line-height: 1.6;
+    }
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+        color: #4caf50;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+    .alert-success i {
+        margin-right: 10px;
+        font-size: 18px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+  <h2><i class="fas fa-users"></i> Employee Management</h2>
+  <!-- Display success message if present -->
+  <div th:if="${message}" class="alert-success">
+    <i class="fas fa-check-circle"></i>
+    <span th:text="${message}"></span>
+  </div>
+  <!-- Include the employees-content fragment -->
+  <div th:replace="~{fragments/employees-content :: content}"></div>
+</div>
+</body>
+</html>

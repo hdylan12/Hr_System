@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div id="employee-details" class="employee-details" th:if="${employee != null}">
+  <h5>Employee Details</h5>
+  <div class="d-flex align-items-center mb-3">
+    <img th:src="${employee.profilePic != null} ? @{'data:image/jpeg;base64,' + #{T(org.apache.commons.codec.binary.Base64).encodeBase64String(employee.profilePic)}} : '/images/default-avatar.png'" class="profile-pic-preview"/>
+    <div>
+      <p class="mb-1"><strong>Username:</strong> <span th:text="${employee.username}"></span></p>
+      <p class="mb-1"><strong>Full Name:</strong> <span th:text="${employee.firstName + ' ' + employee.lastName}"></span></p>
+      <p class="mb-1"><strong>Email:</strong> <span th:text="${employee.email}"></span></p>
+      <p class="mb-1"><strong>Position:</strong> <span th:text="${employee.position?.name ?: 'N/A'}"></span></p>
+      <p class="mb-1"><strong>Phone Number:</strong> <span th:text="${employee.phoneNumber ?: 'N/A'}"></span></p>
+    </div>
+  </div>
+</div>
+<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<div th:fragment="content" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div id="delete-employee-form" class="form-container delete-employee-container">
+        <h2><i class="fas fa-trash-alt"></i> Delete Employee</h2>
+        <form onsubmit="return false;">
+            <div class="mb-3">
+                <label for="deleteQuery" class="form-label">Employee ID or Username</label>
+                <input type="text" class="form-control" id="deleteQuery" name="deleteQuery" placeholder="Enter ID or username">
+            </div>
+            <button type="button" class="btn btn-primary btn-fetch">Fetch Employee</button>
+        </form>
+
+        <div class="delete-warning">
+            <i class="fas fa-exclamation-triangle"></i> Warning: Deleting an employee is permanent and cannot be undone.
+        </div>
+
+        <div id="employee-details" class="employee-card" th:if="${employee != null}">
+            <div class="profile-section">
+                <div class="profile-pic-container">
+                    <img th:src="${employee.profilePic != null} ? @{'data:image/jpeg;base64,' + #{T(org.apache.commons.codec.binary.Base64).encodeBase64String(employee.profilePic)}} : '/images/default-avatar.png'" class="profile-pic-preview"/>
+                </div>
+                <h3 class="employee-name" th:text="${employee.firstName + ' ' + employee.lastName}"></h3>
+                <p class="employee-position" th:text="${employee.position?.name ?: 'Employee'}"></p>
+                <div class="employee-id-badge">
+                    <i class="fas fa-id-badge"></i> <span th:text="${employee.username}"></span>
+                </div>
+            </div>
+
+            <div class="details-section">
+                <h4><i class="fas fa-info-circle"></i> Employee Information</h4>
+                <table class="details-table">
+                    <tr>
+                        <td><i class="fas fa-user detail-icon"></i> Username</td>
+                        <td th:text="${employee.username}"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-envelope detail-icon"></i> Email</td>
+                        <td th:text="${employee.email}"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-briefcase detail-icon"></i> Position</td>
+                        <td th:text="${employee.position?.name ?: 'N/A'}"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-phone detail-icon"></i> Phone Number</td>
+                        <td th:text="${employee.phoneNumber ?: 'N/A'}"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-birthday-cake detail-icon"></i> Date of Birth</td>
+                        <td th:text="${employee.dob ?: 'N/A'}"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-calendar-alt detail-icon"></i> Start Date</td>
+                        <td th:text="${employee.startDate ?: 'N/A'}"></td>
+                    </tr>
+                </table>
+                <button class="btn btn-danger btn-delete-employee" th:attr="data-employee-id=${employee.employeeId}">Delete Employee</button>
+            </div>
+        </div>
+
+        <div th:if="${error != null}" class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i> <span th:text="${error}"></span>
+        </div>
+    </div>
+</div>

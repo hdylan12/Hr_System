@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    .sidebar-content {
+      background: linear-gradient(180deg, #4361ee 0%, #3f37c9 100%);
+      color: #ffffff;
+      height: calc(100vh - 70px);
+      padding: 25px 0; /* Increased padding */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-y: auto;
+    }
+
+    .sidebar-content .nav-section {
+      margin-bottom: 25px; /* Increased spacing */
+    }
+
+    .sidebar-content .nav-section h6 {
+      font-size: 0.9rem;
+      color: #e0e4ff; /* Lighter color for better contrast */
+      padding: 12px 25px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+    }
+
+    .sidebar-content .nav-link {
+      color: #ffffff;
+      padding: 12px 25px;
+      font-size: 1rem; /* Slightly larger */
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar-content .nav-link:hover,
+    .sidebar-content .nav-link.active {
+      background: rgba(255, 255, 255, 0.2); /* Slightly more visible */
+      color: #ffffff;
+      border-left: 3px solid #ffffff; /* Added border for active state */
+    }
+
+    .sidebar-content .nav-link i {
+      margin-right: 12px;
+      font-size: 1.1rem;
+      width: 24px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div th:fragment="hrSidebar" class="sidebar-content">
+  <ul class="nav flex-column">
+    <div class="nav-section">
+      <h6>MAIN</h6>
+      <li class="nav-item">
+        <a class="nav-link active" href="#" data-content="dashboard">
+          <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-content="calendar">
+          <i class="fas fa-calendar-alt"></i> Calendar
+        </a>
+      </li>
+    </div>
+    <div class="nav-section">
+      <h6>EMPLOYEE</h6>
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-content="employee-management">
+          <i class="fas fa-users"></i> Employee Management
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-content="recruitment">
+          <i class="fas fa-user-plus"></i> Recruitment
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-content="attendance">
+          <i class="fas fa-clock"></i> Attendance
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-content="employee-actions">
+          <i class="fas fa-user-cog"></i> Employee Actions
+        </a>
+      </li>
+    </div>
+    <div class="nav-section">
+      <h6>ORGANIZATION</h6>
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-content="departments">
+          <i class="fas fa-building"></i> Departments
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-content="reports">
+          <i class="fas fa-chart-bar"></i> Reports
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-content="company-policy">
+          <i class="fas fa-book"></i> Company Policy
+        </a>
+      </li>
+    </div>
+    <div class="nav-section">
+      <h6>TOOLS</h6>
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-content="payroll-calculator">
+          <i class="fas fa-calculator"></i> Payroll Calculator
+        </a>
+      </li>
+    </div>
+  </ul>
+</div>
+</body>
+</html>

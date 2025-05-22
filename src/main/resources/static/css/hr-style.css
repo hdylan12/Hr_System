@@ -1,0 +1,57 @@
+/* hr-style.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.sidebar {
+    background-color: #e3f2fd; /* Light blue background for HR */
+    border-right: 1px solid #dee2e6;
+}
+
+.sidebar .nav-link {
+    color: #0d6efd; /* Blue text */
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background-color: #bbdefb; /* Lighter blue on hover/active */
+    color: #004085; /* Darker blue */
+}
+
+.header {
+    background-color: #0d6efd; /* Blue header for HR */
+    color: white;
+}
+
+.header .navbar-brand,
+.header .nav-link {
+    color: white !important;
+}
+
+.header .nav-link:hover {
+    color: #bbdefb !important; /* Lighter blue on hover */
+}
+
+.card {
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+    background-color: #e3f2fd;
+    color: #0d6efd;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+    background-color: #004085;
+    border-color: #004085;
+}

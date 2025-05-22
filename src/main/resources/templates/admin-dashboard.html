@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Dashboard</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #d32f2f;
+            --secondary: #b71c1c;
+            --accent: #424242;
+            --light: #eceff1;
+            --dark: #212121;
+            --success: #388e3c;
+            --info: #0288d1;
+            --warning: #f57c00;
+            --danger: #c62828;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Header Styles */
+        .header {
+            background: #fff;
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 2000; /* Increased z-index to ensure header is above all content */
+            overflow: visible; /* Prevent clipping of dropdown */
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+            margin: 0 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 8px 12px 8px 35px;
+            border: 1px solid #bdbdbd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--dark);
+            background: #fafafa;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #757575;
+            font-size: 0.85rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-actions .icon {
+            position: relative;
+            font-size: 1.3rem;
+            color: var(--dark);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .header-actions .icon:hover {
+            color: var(--primary);
+        }
+
+        .header-actions .icon .badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--primary);
+            color: #fff;
+            font-size: 0.65rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-actions .profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--dark);
+            cursor: pointer;
+            position: relative; /* Ensure dropdown positions relative to this */
+        }
+
+        .header-actions .profile .profile-pic {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #757575;
+            overflow: hidden;
+        }
+
+        .header-actions .profile .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .header-actions .profile i {
+            font-size: 0.85rem;
+            color: #757575;
+        }
+
+        .header-actions .profile .dropdown-menu {
+            margin-top: 5px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            z-index: 2001; /* Increased z-index to ensure dropdown is above all content */
+            min-width: 150px;
+        }
+
+        .header-actions .profile .dropdown-item {
+            font-size: 0.9rem;
+            padding: 8px 15px;
+            color: var(--dark);
+            transition: background 0.3s ease;
+        }
+
+        .header-actions .profile .dropdown-item:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 220px;
+            height: calc(100vh - 60px - 50px);
+            z-index: 999;
+            background: var(--accent);
+            color: #fff;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-content {
+            padding: 20px 0;
+        }
+
+        .sidebar-content .nav-section {
+            margin-bottom: 20px;
+        }
+
+        .sidebar-content .nav-section h6 {
+            font-size: 0.85rem;
+            color: #b0bec5;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .sidebar-content .nav-link {
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-content .nav-link:hover,
+        .sidebar-content .nav-link.active {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .sidebar-content .nav-link i {
+            margin-right: 10px;
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .content {
+            flex: 1 0 auto;
+            padding-top: 60px;
+            padding-bottom: 50px;
+            overflow-y: auto;
+            z-index: 1; /* Ensure content is below header */
+        }
+
+        .main-content {
+            margin-left: 220px;
+            padding: 25px;
+            height: calc(100vh - 110px);
+            overflow-y: auto;
+            z-index: 1; /* Ensure main content is below header */
+        }
+
+        .dashboard-content {
+            background: #fff;
+            border-radius: 6px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            overflow-y: auto;
+            z-index: 1; /* Ensure dashboard content is below header */
+        }
+
+        /* Card Styles */
+        .card {
+            background: #fff;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card-body {
+            padding: 0;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .card-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        /* Table Styles */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            background: #fff;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th,
+        .table td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .table th {
+            background: var(--accent);
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .table tr:nth-child(even) {
+            background: #f5f5f5;
+        }
+
+        .table tr {
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .table tr:last-child {
+            border-bottom: none;
+        }
+
+        .table .no-data {
+            text-align: center;
+            color: #757575;
+            padding: 20px;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: #fff;
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            height: 50px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #757575;
+        }
+
+        footer a {
+            margin-left: 20px;
+            font-size: 0.85rem;
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1001;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 10px 20px;
+            }
+
+            .search-bar {
+                max-width: 250px;
+                margin: 0 10px;
+            }
+
+            .header-actions {
+                gap: 15px;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .dashboard-content {
+                padding: 20px;
+            }
+
+            .card {
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .dashboard-content {
+                padding: 15px;
+            }
+
+            .table th,
+            .table td {
+                padding: 10px;
+                font-size: 0.8rem;
+            }
+
+            .search-bar {
+                max-width: 150px;
+            }
+
+            .header-actions {
+                gap: 10px;
+            }
+
+            .header-actions .profile span {
+                display: none;
+            }
+
+            .header-actions .profile .profile-pic {
+                margin-right: 0;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 8px;
+                padding: 10px 20px;
+            }
+
+            footer a {
+                margin-left: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <!-- Header -->
+    <header class="header">
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search...">
+        </div>
+        <div class="header-actions">
+            <div class="icon">
+                <i class="fas fa-bell"></i>
+                <span class="badge">5</span>
+            </div>
+            <div class="icon">
+                <i class="fas fa-envelope"></i>
+                <span class="badge">3</span>
+            </div>
+            <div class="profile dropdown">
+                <a href="#" class="d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false" data-bs-popper-config='{"placement":"bottom-end"}'>
+                    <span th:text="${username} ?: 'Admin'">Admin</span>
+                    <div class="profile-pic ms-2">
+                        <i class="fas fa-user" th:if="${profilePic == null}"></i>
+                        <img th:if="${profilePic != null}" th:src="${profilePic}" alt="Profile Picture">
+                    </div>
+                    <i class="fas fa-caret-down ms-2"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#" data-content="profile-content">Profile</a></li>
+                    <li><a class="dropdown-item" href="#" data-content="settings">Settings</a></li>
+                    <li><a class="dropdown-item" id="logoutLink" href="#">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <div class="content">
+        <button class="sidebar-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar -->
+                <nav class="sidebar">
+                    <div class="sidebar-content">
+                        <ul class="nav flex-column">
+                            <div class="nav-section">
+                                <h6>MAIN</h6>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#" data-content="dashboard">
+                                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                                    </a>
+                                </li>
+                            </div>
+                            <div class="nav-section">
+                                <h6>ADMIN</h6>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-content="users">
+                                        <i class="fas fa-users"></i> User Management
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/content/add-user" data-content="add-user">
+                                        <i class="fas fa-user-plus"></i> Add User
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/content/manage-users" data-content="manage-users">
+                                        <i class="fas fa-users-cog"></i> Manage Users
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-content="reports">
+                                        <i class="fas fa-chart-bar"></i> Reports
+                                    </a>
+                                </li>
+                            </div>
+                            <div class="nav-section">
+                                <h6>SETTINGS</h6>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-content="settings">
+                                        <i class="fas fa-cog"></i> System Settings
+                                    </a>
+                                </li>
+                            </div>
+                        </ul>
+                    </div>
+                </nav>
+
+                <!-- Main Content -->
+                <main class="main-content">
+                    <div class="dashboard-content">
+                        <div id="content-container">
+                            <h1 class="mb-4" style="font-size: 1.5rem; color: var(--dark); font-weight: 700;">Admin Dashboard</h1>
+                            <div class="row">
+                                <div class="col-md-4 mb-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Connected Users</h5>
+                                            <p class="card-text" th:text="${connectedUsers}">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Active Requests</h5>
+                                            <p class="card-text" th:text="${activeRequests}">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <th:block th:replace="~{fragments/footer :: footer}"></th:block>
+    </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/script.js}"></script>
+<script>
+    function toggleSidebar() {
+        document.querySelector('.sidebar').classList.toggle('active');
+    }
+</script>
+</body>
+</html>

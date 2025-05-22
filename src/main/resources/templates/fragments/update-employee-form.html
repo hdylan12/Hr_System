@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Employee</title>
+    <style>
+        :root {
+          --primary-color: #4caf50;
+          --secondary-color: #80e27e;
+          --text-color: #333;
+          --bg-color: #f8f9fa;
+          --card-bg: #fff;
+          --border-radius: 12px;
+          --box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+          --input-bg: #f9f9f9;
+          --section-padding: 20px;
+        }
+
+        body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background-color: var(--bg-color);
+          color: var(--text-color);
+          margin: 0;
+          padding: 20px;
+          line-height: 1.6;
+        }
+
+        .form-container {
+          max-width: 900px;
+          margin: 0 auto;
+          padding: 30px;
+          background: linear-gradient(135deg, #f5f7fa 0%, #e0f2e1 100%);
+          border-radius: var(--border-radius);
+          box-shadow: var(--box-shadow);
+        }
+
+        h2 {
+          color: var(--primary-color);
+          margin-bottom: 24px;
+          font-weight: 600;
+          text-align: center;
+        }
+
+        .alert-danger {
+          background-color: #f8d7da;
+          color: #721c24;
+          padding: 15px;
+          border-radius: var(--border-radius);
+          margin-bottom: 20px;
+          display: flex;
+          align-items: center;
+        }
+
+        .alert-danger i {
+          margin-right: 10px;
+          font-size: 18px;
+        }
+
+        .update-form {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 25px;
+        }
+
+        .form-section {
+          background-color: var(--card-bg);
+          border-radius: var(--border-radius);
+          padding: var(--section-padding);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-section h3 {
+          color: var(--primary-color);
+          margin-top: 0;
+          margin-bottom: 20px;
+          font-size: 18px;
+          border-bottom: 2px solid var(--secondary-color);
+          padding-bottom: 10px;
+          display: flex;
+          align-items: center;
+        }
+
+        .form-section h3 i {
+          margin-right: 10px;
+        }
+
+        .form-full-width {
+          grid-column: span 2;
+        }
+
+        .form-group {
+          margin-bottom: 18px;
+        }
+
+        .form-label {
+          display: block;
+          margin-bottom: 8px;
+          font-weight: 500;
+          color: var(--text-color);
+        }
+
+        .form-control {
+          width: 100%;
+          padding: 12px 15px;
+          border: 1px solid #ddd;
+          border-radius: var(--border-radius);
+          font-size: 16px;
+          background-color: var(--input-bg);
+          transition: all 0.3s ease;
+          box-sizing: border-box;
+        }
+
+        .form-control:focus {
+          border-color: var(--primary-color);
+          box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+          outline: none;
+        }
+
+        .avatar-upload {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+          border: 2px dashed #ddd;
+          border-radius: var(--border-radius);
+          background-color: var(--input-bg);
+          transition: all 0.3s ease;
+          cursor: pointer;
+          margin-bottom: 18px;
+        }
+
+        .avatar-upload:hover {
+          border-color: var(--primary-color);
+          background-color: rgba(76, 175, 80, 0.05);
+        }
+
+        .avatar-preview {
+          width: 150px;
+          height: 150px;
+          border-radius: 50%;
+          overflow: hidden;
+          margin-bottom: 15px;
+          border: 4px solid white;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .avatar-preview img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .custom-file-input {
+          background-color: transparent;
+          border: none;
+          width: auto;
+          padding: 8px;
+          cursor: pointer;
+        }
+
+        .multi-select {
+          width: 100%;
+          min-height: 120px;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: var(--border-radius);
+          background-color: var(--input-bg);
+        }
+
+        .submit-btn {
+          background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+          border: none;
+          color: white;
+          padding: 14px 28px;
+          border-radius: var(--border-radius);
+          cursor: pointer;
+          font-weight: 600;
+          font-size: 16px;
+          transition: all 0.3s ease;
+          margin-top: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+        }
+
+        .submit-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 7px 14px rgba(76, 175, 80, 0.4);
+        }
+
+        .submit-btn i {
+          margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+          .update-form {
+            grid-template-columns: 1fr;
+          }
+
+          .form-full-width {
+            grid-column: span 1;
+          }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<div class="form-container">
+    <h2><i class="fas fa-user-edit"></i> Update Employee</h2>
+
+    <!-- Display error if present -->
+    <div th:if="${error}" class="alert-danger">
+        <i class="fas fa-exclamation-circle"></i>
+        <span th:text="${error}"></span>
+    </div>
+
+    <!-- Form submitting to /hr/content/update-employee -->
+    <form th:action="@{/hr/content/update-employee}" th:method="post" enctype="multipart/form-data" class="update-form">
+        <!-- CSRF Token (required by Spring Security) -->
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <!-- Hidden employeeId field -->
+        <input type="hidden" name="employeeId" th:value="${employee.employeeId}" />
+
+        <!-- Account Information Section -->
+        <div class="form-section">
+            <h3><i class="fas fa-user-circle"></i> Account Information</h3>
+
+            <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" name="username" class="form-control" th:value="${employee.username}" />
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" th:value="${employee.email}" />
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-control" th:value="${employee.password}" />
+            </div>
+        </div>
+
+        <!-- Personal Information Section -->
+        <div class="form-section">
+            <h3><i class="fas fa-address-card"></i> Personal Information</h3>
+
+            <div class="form-group">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" id="firstName" name="firstName" class="form-control" th:value="${employee.firstName}" />
+            </div>
+
+            <div class="form-group">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" id="lastName" name="lastName" class="form-control" th:value="${employee.lastName}" />
+            </div>
+
+            <div class="form-group">
+                <label for="dob" class="form-label">Date of Birth</label>
+                <input type="date" id="dob" name="dob" class="form-control" th:value="${employee.dob}" />
+            </div>
+
+            <div class="form-group">
+                <label for="phoneNumber" class="form-label">Phone Number</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" th:value="${employee.phoneNumber}" />
+            </div>
+        </div>
+
+        <!-- Profile Picture Section -->
+        <div class="form-section">
+            <h3><i class="fas fa-camera"></i> Profile Picture</h3>
+
+            <div class="avatar-upload">
+                <div class="avatar-preview">
+                    <img th:src="${employee.profilePic != null} ? @{'data:image/jpeg;base64,' + #{T(org.apache.commons.codec.binary.Base64).encodeBase64String(employee.profilePic)}} : '/images/default-avatar.png'" alt="Profile Picture" />
+                </div>
+                <input type="file" name="profilePicUpload" id="profilePicUpload" class="custom-file-input" />
+                <small>Click to upload a new profile picture</small>
+            </div>
+        </div>
+
+        <!-- Position & Qualification Section -->
+        <div class="form-section">
+            <h3><i class="fas fa-briefcase"></i> Position & Qualifications</h3>
+
+            <div class="form-group">
+                <label for="positionName" class="form-label">Position Title</label>
+                <input type="text" id="positionName" name="positionName" class="form-control" th:value="${employee.position?.name}" />
+            </div>
+
+            <div class="form-group">
+                <label for="positionCode" class="form-label">Position Code</label>
+                <input type="number" id="positionCode" name="positionCode" class="form-control" th:value="${employee.position?.code}" />
+            </div>
+
+            <div class="form-group">
+                <label for="qualifications" class="form-label">Qualifications</label>
+                <select id="qualifications" name="qualifications" multiple class="multi-select">
+                    <option th:each="qualType : ${T(com.example.hrsystem.model.Qualification.QualificationType).values()}"
+                            th:value="${qualType}"
+                            th:text="${qualType}"
+                            th:selected="${employee.qualifications != null and employee.qualifications.contains(qualType)}"></option>
+                </select>
+                <small>Hold Ctrl/Cmd to select multiple qualifications</small>
+            </div>
+        </div>
+
+        <!-- Submit Button (Full Width) -->
+        <div class="form-section form-full-width">
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-save"></i> Update Employee
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
